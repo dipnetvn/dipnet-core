@@ -1,18 +1,18 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2015 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package filters
 
@@ -25,13 +25,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/history"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core/history"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/internal/ethapi"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
 var (
@@ -69,7 +69,7 @@ type filter struct {
 }
 
 // FilterAPI offers support to create and manage filters. This will allow external clients to retrieve various
-// information related to the Ethereum protocol such as blocks, transactions and logs.
+// information related to the DipNet protocol such as blocks, transactions and logs.
 type FilterAPI struct {
 	sys           *FilterSystem
 	events        *EventSystem
@@ -278,7 +278,7 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 		matchedLogs = make(chan []*types.Log)
 	)
 
-	logsSub, err := api.events.SubscribeLogs(ethereum.FilterQuery(crit), matchedLogs)
+	logsSub, err := api.events.SubscribeLogs(dipnet.FilterQuery(crit), matchedLogs)
 	if err != nil {
 		return nil, err
 	}
@@ -301,8 +301,8 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 }
 
 // TransactionReceiptsQuery defines criteria for transaction receipts subscription.
-// Same as ethereum.TransactionReceiptsQuery but with UnmarshalJSON() method.
-type TransactionReceiptsQuery ethereum.TransactionReceiptsQuery
+// Same as dipnet.TransactionReceiptsQuery but with UnmarshalJSON() method.
+type TransactionReceiptsQuery dipnet.TransactionReceiptsQuery
 
 // UnmarshalJSON sets *args fields with given data.
 func (args *TransactionReceiptsQuery) UnmarshalJSON(data []byte) error {
@@ -378,8 +378,8 @@ func (api *FilterAPI) TransactionReceipts(ctx context.Context, filter *Transacti
 }
 
 // FilterCriteria represents a request to create a new filter.
-// Same as ethereum.FilterQuery but with UnmarshalJSON() method.
-type FilterCriteria ethereum.FilterQuery
+// Same as dipnet.FilterQuery but with UnmarshalJSON() method.
+type FilterCriteria dipnet.FilterQuery
 
 // NewFilter creates a new filter and returns the filter id. It can be
 // used to retrieve logs when the state changes. This method cannot be
@@ -394,7 +394,7 @@ type FilterCriteria ethereum.FilterQuery
 // In case "fromBlock" > "toBlock" an error is returned.
 func (api *FilterAPI) NewFilter(crit FilterCriteria) (rpc.ID, error) {
 	logs := make(chan []*types.Log)
-	logsSub, err := api.events.SubscribeLogs(ethereum.FilterQuery(crit), logs)
+	logsSub, err := api.events.SubscribeLogs(dipnet.FilterQuery(crit), logs)
 	if err != nil {
 		return "", err
 	}

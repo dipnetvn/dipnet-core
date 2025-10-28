@@ -1,4 +1,4 @@
-module github.com/ethereum/go-ethereum
+module github.com/dipnetvn/dipnet-core
 
 go 1.24.0
 

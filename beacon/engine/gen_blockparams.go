@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core/types"
 )
 
 var _ = (*payloadAttributesMarshaling)(nil)

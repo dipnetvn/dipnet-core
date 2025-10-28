@@ -1,18 +1,18 @@
-// Copyright 2014 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2014 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package node
 
@@ -25,11 +25,11 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/p2p"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
 const (
@@ -46,7 +46,7 @@ const (
 // all registered services.
 type Config struct {
 	// Name sets the instance name of the node. It must not contain the / character and is
-	// used in the devp2p node identifier. The instance name of geth is "geth". If no
+	// used in the devp2p node identifier. The instance name of dipnet is "dipnet". If no
 	// value is specified, the basename of the current executable is used.
 	Name string `toml:"-"`
 
@@ -193,7 +193,7 @@ type Config struct {
 	// Logger is a custom logger to use with the p2p.Server.
 	Logger log.Logger `toml:",omitempty"`
 
-	oldGethResourceWarning bool
+	oldDipNetResourceWarning bool
 
 	// AllowUnprotectedTxs allows non EIP-155 protected transactions to be send over RPC.
 	AllowUnprotectedTxs bool `toml:",omitempty"`
@@ -297,9 +297,9 @@ func (c *Config) ExtRPCEnabled() bool {
 // NodeName returns the devp2p node identifier.
 func (c *Config) NodeName() string {
 	name := c.name()
-	// Backwards compatibility: previous versions used title-cased "Geth", keep that.
-	if name == "geth" || name == "geth-testnet" {
-		name = "Geth"
+	// Backwards compatibility: previous versions used title-cased "DipNet", keep that.
+	if name == "dipnet" || name == "dipnet-testnet" {
+		name = "DipNet"
 	}
 	if c.UserIdent != "" {
 		name += "/" + c.UserIdent
@@ -323,8 +323,8 @@ func (c *Config) name() string {
 	return c.Name
 }
 
-// These resources are resolved differently for "geth" instances.
-var isOldGethResource = map[string]bool{
+// These resources are resolved differently for "dipnet" instances.
+var isOldDipNetResource = map[string]bool{
 	"chaindata":          true,
 	"nodes":              true,
 	"nodekey":            true,
@@ -341,16 +341,16 @@ func (c *Config) ResolvePath(path string) string {
 		return ""
 	}
 	// Backwards-compatibility: ensure that data directory files created
-	// by geth 1.4 are used if they exist.
-	if warn, isOld := isOldGethResource[path]; isOld {
+	// by dipnet 1.4 are used if they exist.
+	if warn, isOld := isOldDipNetResource[path]; isOld {
 		oldpath := ""
-		if c.name() == "geth" {
+		if c.name() == "dipnet" {
 			oldpath = filepath.Join(c.DataDir, path)
 		}
 		if oldpath != "" && common.FileExist(oldpath) {
-			if warn && !c.oldGethResourceWarning {
-				c.oldGethResourceWarning = true
-				log.Warn("Using deprecated resource file, please move this file to the 'geth' subdirectory of datadir.", "file", oldpath)
+			if warn && !c.oldDipNetResourceWarning {
+				c.oldDipNetResourceWarning = true
+				log.Warn("Using deprecated resource file, please move this file to the 'dipnet' subdirectory of datadir.", "file", oldpath)
 			}
 			return oldpath
 		}
@@ -465,7 +465,7 @@ func (c *Config) GetKeyStoreDir() (string, bool, error) {
 	isEphemeral := false
 	if keydir == "" {
 		// There is no datadir.
-		keydir, err = os.MkdirTemp("", "go-ethereum-keystore")
+		keydir, err = os.MkdirTemp("", "dipnet-core-keystore")
 		isEphemeral = true
 	}
 

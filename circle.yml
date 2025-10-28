@@ -23,10 +23,10 @@ dependencies:
 
 test:
   override:
-    # Build Geth and move into a known folder
-    - make geth
-    - cp ./build/bin/geth $HOME/geth
+    # Build DipNet and move into a known folder
+    - make dipnet
+    - cp ./build/bin/dipnet $HOME/dipnet
 
     # Run hive and move all generated logs into the public artifacts folder
-    - (cd ~/.go_workspace/src/github.com/karalabe/hive && hive --docker-noshell --client=go-ethereum:local --override=$HOME/geth --test=. --sim=.)
+    - (cd ~/.go_workspace/src/github.com/karalabe/hive && hive --docker-noshell --client=dipnet-core:local --override=$HOME/dipnet --test=. --sim=.)
     - cp -r ~/.go_workspace/src/github.com/karalabe/hive/workspace/logs/* $CIRCLE_ARTIFACTS

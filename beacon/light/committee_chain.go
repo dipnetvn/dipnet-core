@@ -1,18 +1,18 @@
-// Copyright 2023 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2023 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package light
 
@@ -23,14 +23,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/beacon/params"
-	"github.com/ethereum/go-ethereum/beacon/types"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/lru"
-	"github.com/ethereum/go-ethereum/common/mclock"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/dipnetvn/dipnet-core/beacon/params"
+	"github.com/dipnetvn/dipnet-core/beacon/types"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/lru"
+	"github.com/dipnetvn/dipnet-core/common/mclock"
+	"github.com/dipnetvn/dipnet-core/core/rawdb"
+	"github.com/dipnetvn/dipnet-core/ethdb"
+	"github.com/dipnetvn/dipnet-core/log"
 )
 
 var (
@@ -54,7 +54,7 @@ var (
 //   - an update can only be present if a committee is present at the same period
 //     and the update signature is valid and has enough participants.
 //     The committee at the next period (proven by the update) should also be
-//     present (note that this means they can only be added together if neither
+//     present (note that this means they can only be added todipneter if neither
 //     is present yet). If a fixed root is present at the next period then the
 //     update can only be present if it proves the same committee root.
 //

@@ -33,7 +33,7 @@ static void print_table(FILE* fp, int blocks, int teeth) {
     secp256k1_ge_storage* table = checked_malloc(&default_error_callback, blocks * points * sizeof(secp256k1_ge_storage));
     secp256k1_ecmult_gen_compute_table(table, &secp256k1_ge_const_g, blocks, teeth, spacing);
 
-    fprintf(fp, "#elif (COMB_BLOCKS == %d) && (COMB_TEETH == %d) && (COMB_SPACING == %d)\n", blocks, teeth, spacing);
+    fprintf(fp, "#elif (COMB_BLOCKS == %d) && (COMB_TEDIP == %d) && (COMB_SPACING == %d)\n", blocks, teeth, spacing);
     for (outer = 0; outer != blocks; outer++) {
         fprintf(fp,"{");
         for (inner = 0; inner != points; inner++) {
@@ -82,12 +82,12 @@ int main(int argc, char **argv) {
     fprintf(fp, "#if 0\n");
     for (config = 0; config < sizeof(CONFIGS) / sizeof(*CONFIGS); ++config) {
         print_table(fp, CONFIGS[config][0], CONFIGS[config][1]);
-        if (CONFIGS[config][0] == COMB_BLOCKS && CONFIGS[config][1] == COMB_TEETH) {
+        if (CONFIGS[config][0] == COMB_BLOCKS && CONFIGS[config][1] == COMB_TEDIP) {
             did_current_config = 1;
         }
     }
     if (!did_current_config) {
-        print_table(fp, COMB_BLOCKS, COMB_TEETH);
+        print_table(fp, COMB_BLOCKS, COMB_TEDIP);
     }
     fprintf(fp, "#else\n");
     fprintf(fp, "#    error Configuration mismatch, invalid COMB_* parameters. Try deleting precomputed_ecmult_gen.c before the build.\n");

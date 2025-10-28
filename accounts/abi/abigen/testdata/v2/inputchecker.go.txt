@@ -8,10 +8,10 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/v2"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/dipnetvn/dipnet-core/accounts/abi"
+	"github.com/dipnetvn/dipnet-core/accounts/abi/bind/v2"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/core/types"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -30,7 +30,7 @@ var InputCheckerMetaData = bind.MetaData{
 	ID:  "e551ce092312e54f54f45ffdf06caa4cdc",
 }
 
-// InputChecker is an auto generated Go binding around an Ethereum contract.
+// InputChecker is an auto generated Go binding around an DipNet contract.
 type InputChecker struct {
 	abi abi.ABI
 }

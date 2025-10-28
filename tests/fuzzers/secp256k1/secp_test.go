@@ -1,18 +1,18 @@
-// Copyright 2021 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2021 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package secp256k1
 
@@ -21,7 +21,7 @@ import (
 	"testing"
 
 	dcred_secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
+	"github.com/dipnetvn/dipnet-core/crypto/secp256k1"
 )
 
 func TestFuzzer(t *testing.T) {
@@ -48,6 +48,6 @@ func fuzz(dataP1, dataP2 []byte) {
 	resBX, resBY := curveB.Add(x1, y1, x2, y2)
 	if resAX.Cmp(resBX) != 0 || resAY.Cmp(resBY) != 0 {
 		fmt.Printf("%s %s %s %s\n", x1, y1, x2, y2)
-		panic(fmt.Sprintf("Addition failed: geth: %s %s btcd: %s %s", resAX, resAY, resBX, resBY))
+		panic(fmt.Sprintf("Addition failed: dipnet: %s %s btcd: %s %s", resAX, resAY, resBX, resBY))
 	}
 }

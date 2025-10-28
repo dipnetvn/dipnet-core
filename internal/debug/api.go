@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2016 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 // Package debug interfaces Go runtime debugging facilities.
 // This package is mostly glue code making these facilities available
@@ -35,8 +35,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/log"
 	"github.com/hashicorp/go-bexpr"
 )
 
@@ -247,9 +247,9 @@ func (*HandlerT) SetGCPercent(v int) int {
 //     runtime may cause the garbage collector to run nearly continuously. However,
 //     the application may still make progress.
 //
-//   - Setting the limit too low will cause Geth to become unresponsive.
+//   - Setting the limit too low will cause DipNet to become unresponsive.
 //
-//   - Geth also allocates memory off-heap, particularly for fastCache and Pebble,
+//   - DipNet also allocates memory off-heap, particularly for fastCache and Pebble,
 //     which can be non-trivial (a few gigabytes by default).
 func (*HandlerT) SetMemoryLimit(limit int64) int64 {
 	log.Info("Setting memory limit", "size", common.PrettyDuration(limit))

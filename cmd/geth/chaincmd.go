@@ -1,18 +1,18 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2015 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -30,23 +30,23 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/history"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/internal/era"
-	"github.com/ethereum/go-ethereum/internal/era/eradl"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/dipnetvn/dipnet-core/cmd/utils"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/history"
+	"github.com/dipnetvn/dipnet-core/core/rawdb"
+	"github.com/dipnetvn/dipnet-core/core/state"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/ethdb"
+	"github.com/dipnetvn/dipnet-core/internal/debug"
+	"github.com/dipnetvn/dipnet-core/internal/era"
+	"github.com/dipnetvn/dipnet-core/internal/era/eradl"
+	"github.com/dipnetvn/dipnet-core/internal/flags"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/params"
 	"github.com/urfave/cli/v2"
 )
 
@@ -175,7 +175,7 @@ into Era archives. Eras are typically packaged in steps of 8192 blocks.
 		Flags:     slices.Concat([]cli.Flag{utils.CacheFlag}, utils.DatabaseFlags),
 		Description: `
 The import-preimages command imports hash preimages from an RLP encoded stream.
-It's deprecated, please use "geth db import" instead.
+It's deprecated, please use "dipnet db import" instead.
 `,
 	}
 

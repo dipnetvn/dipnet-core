@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2016 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -23,12 +23,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/internal/cmdtest"
-	"github.com/ethereum/go-ethereum/internal/reexec"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/internal/cmdtest"
+	"github.com/dipnetvn/dipnet-core/internal/reexec"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
-type testgeth struct {
+type testdipnet struct {
 	*cmdtest.TestCmd
 
 	// template variables for expect
@@ -37,8 +37,8 @@ type testgeth struct {
 }
 
 func init() {
-	// Run the app if we've been exec'd as "geth-test" in runGeth.
-	reexec.Register("geth-test", func() {
+	// Run the app if we've been exec'd as "dipnet-test" in runDipNet.
+	reexec.Register("dipnet-test", func() {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -55,19 +55,19 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func initGeth(t *testing.T) string {
+func initDipNet(t *testing.T) string {
 	args := []string{"--networkid=42", "init", "./testdata/clique.json"}
-	t.Logf("Initializing geth: %v ", args)
-	g := runGeth(t, args...)
+	t.Logf("Initializing dipnet: %v ", args)
+	g := runDipNet(t, args...)
 	datadir := g.Datadir
 	g.WaitExit()
 	return datadir
 }
 
-// spawns geth with the given command line args. If the args don't set --datadir, the
+// spawns dipnet with the given command line args. If the args don't set --datadir, the
 // child g gets a temporary data directory.
-func runGeth(t *testing.T, args ...string) *testgeth {
-	tt := &testgeth{}
+func runDipNet(t *testing.T, args ...string) *testdipnet {
+	tt := &testdipnet{}
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
 	for i, arg := range args {
 		switch arg {
@@ -87,9 +87,9 @@ func runGeth(t *testing.T, args ...string) *testgeth {
 		args = append([]string{"--datadir", tt.Datadir}, args...)
 	}
 
-	// Boot "geth". This actually runs the test binary but the TestMain
+	// Boot "dipnet". This actually runs the test binary but the TestMain
 	// function will prevent any tests from running.
-	tt.Run("geth-test", args...)
+	tt.Run("dipnet-test", args...)
 
 	return tt
 }

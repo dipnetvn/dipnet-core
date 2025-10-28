@@ -1,18 +1,18 @@
-// Copyright 2021 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2021 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 //go:build cgo
 // +build cgo
@@ -30,7 +30,7 @@ import (
 	gnark "github.com/consensys/gnark-crypto/ecc/bls12-381"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fp"
 	"github.com/consensys/gnark-crypto/ecc/bls12-381/fr"
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/dipnetvn/dipnet-core/common"
 	blst "github.com/supranational/blst/bindings/go"
 )
 
@@ -88,7 +88,7 @@ func fuzzCrossPairing(data []byte) int {
 	blstResult.FinalExp()
 	res := massageBLST(blstResult.ToBendian())
 	if !(bytes.Equal(res, cResult.Marshal())) {
-		panic("pairing mismatch blst / geth")
+		panic("pairing mismatch blst / dipnet")
 	}
 
 	return 1
@@ -140,7 +140,7 @@ func fuzzCrossG1Add(data []byte) int {
 
 	bl3 := blst.P1AffinesAdd([]*blst.P1Affine{bl1, bl2})
 	if !(bytes.Equal(cp.Marshal(), bl3.Serialize())) {
-		panic("G1 point addition mismatch blst / geth ")
+		panic("G1 point addition mismatch blst / dipnet ")
 	}
 
 	return 1
@@ -168,7 +168,7 @@ func fuzzCrossG2Add(data []byte) int {
 
 	bl3 := blst.P2AffinesAdd([]*blst.P2Affine{bl1, bl2})
 	if !(bytes.Equal(gp.Marshal(), bl3.Serialize())) {
-		panic("G2 point addition mismatch blst / geth ")
+		panic("G2 point addition mismatch blst / dipnet ")
 	}
 
 	return 1
@@ -184,7 +184,7 @@ func fuzzCrossG1MultiExp(data []byte) int {
 	)
 	// n random scalars (max 17)
 	for i := 0; i < 17; i++ {
-		// note that geth/crypto/bls12381 works only with scalars <= 32bytes
+		// note that dipnet/crypto/bls12381 works only with scalars <= 32bytes
 		s, err := randomScalar(input, fr.Modulus())
 		if err != nil {
 			break
@@ -235,7 +235,7 @@ func fuzzCrossG2MultiExp(data []byte) int {
 	)
 	// n random scalars (max 17)
 	for i := 0; i < 17; i++ {
-		// note that geth/crypto/bls12381 works only with scalars <= 32bytes
+		// note that dipnet/crypto/bls12381 works only with scalars <= 32bytes
 		s, err := randomScalar(input, fr.Modulus())
 		if err != nil {
 			break
@@ -294,7 +294,7 @@ func getG1Points(input io.Reader) (*gnark.G1Affine, *blst.P1Affine, error) {
 	p1 := new(blst.P1Affine).From(scalar)
 	blstRes := p1.Serialize()
 	if !bytes.Equal(blstRes, cpBytes) {
-		panic(fmt.Sprintf("bytes(blst.G1) != bytes(geth.G1)\nblst.G1: %x\ngeth.G1: %x\n", blstRes, cpBytes))
+		panic(fmt.Sprintf("bytes(blst.G1) != bytes(dipnet.G1)\nblst.G1: %x\ndipnet.G1: %x\n", blstRes, cpBytes))
 	}
 
 	return cp, p1, nil

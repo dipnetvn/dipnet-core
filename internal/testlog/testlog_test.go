@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/dipnetvn/dipnet-core/log"
 )
 
 type mockT struct {

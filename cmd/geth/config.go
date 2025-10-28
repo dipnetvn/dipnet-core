@@ -1,18 +1,18 @@
-// Copyright 2017 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2017 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -27,24 +27,24 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/external"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/accounts/scwallet"
-	"github.com/ethereum/go-ethereum/accounts/usbwallet"
-	"github.com/ethereum/go-ethereum/beacon/blsync"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/catalyst"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/internal/version"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/accounts"
+	"github.com/dipnetvn/dipnet-core/accounts/external"
+	"github.com/dipnetvn/dipnet-core/accounts/keystore"
+	"github.com/dipnetvn/dipnet-core/accounts/scwallet"
+	"github.com/dipnetvn/dipnet-core/accounts/usbwallet"
+	"github.com/dipnetvn/dipnet-core/beacon/blsync"
+	"github.com/dipnetvn/dipnet-core/cmd/utils"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/eth/catalyst"
+	"github.com/dipnetvn/dipnet-core/eth/ethconfig"
+	"github.com/dipnetvn/dipnet-core/internal/flags"
+	"github.com/dipnetvn/dipnet-core/internal/version"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/metrics"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/rpc"
 	"github.com/naoina/toml"
 	"github.com/urfave/cli/v2"
 )
@@ -105,14 +105,14 @@ type ethstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
-type gethConfig struct {
+type dipnetConfig struct {
 	Eth      ethconfig.Config
 	Node     node.Config
 	Ethstats ethstatsConfig
 	Metrics  metrics.Config
 }
 
-func loadConfig(file string, cfg *gethConfig) error {
+func loadConfig(file string, cfg *dipnetConfig) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -138,11 +138,11 @@ func defaultNodeConfig() node.Config {
 	return cfg
 }
 
-// loadBaseConfig loads the gethConfig based on the given command line
+// loadBaseConfig loads the dipnetConfig based on the given command line
 // parameters and config file.
-func loadBaseConfig(ctx *cli.Context) gethConfig {
+func loadBaseConfig(ctx *cli.Context) dipnetConfig {
 	// Load defaults.
-	cfg := gethConfig{
+	cfg := dipnetConfig{
 		Eth:     ethconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
@@ -160,8 +160,8 @@ func loadBaseConfig(ctx *cli.Context) gethConfig {
 	return cfg
 }
 
-// makeConfigNode loads geth configuration and creates a blank node instance.
-func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
+// makeConfigNode loads dipnet configuration and creates a blank node instance.
+func makeConfigNode(ctx *cli.Context) (*node.Node, dipnetConfig) {
 	cfg := loadBaseConfig(ctx)
 	stack, err := node.New(&cfg.Node)
 	if err != nil {
@@ -182,9 +182,9 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 }
 
 // constructs the disclaimer text block which will be printed in the logs upon
-// startup when Geth is running in dev mode.
-func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
-	devModeBanner := `You are running Geth in --dev mode. Please note the following:
+// startup when DipNet is running in dev mode.
+func constructDevModeBanner(ctx *cli.Context, cfg dipnetConfig) string {
+	devModeBanner := `You are running DipNet in --dev mode. Please note the following:
 
   1. This mode is only intended for fast, iterative development without assumptions on
      security or persistence.
@@ -206,7 +206,7 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 
        Account
        ------------------
-       0x%x (10^49 ETH)
+       0x%x (10^49 DIP)
 `, cfg.Eth.Miner.PendingFeeRecipient)
 		if cfg.Eth.Miner.PendingFeeRecipient == utils.DeveloperAddr {
 			devModeBanner += fmt.Sprintf(`
@@ -220,7 +220,7 @@ func constructDevModeBanner(ctx *cli.Context, cfg gethConfig) string {
 	return devModeBanner
 }
 
-// makeFullNode loads geth configuration and creates the Ethereum backend.
+// makeFullNode loads dipnet configuration and creates the DipNet backend.
 func makeFullNode(ctx *cli.Context) *node.Node {
 	stack, cfg := makeConfigNode(ctx)
 	if ctx.IsSet(utils.OverrideOsaka.Name) {
@@ -245,13 +245,13 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 
 	backend, eth := utils.RegisterEthService(stack, &cfg.Eth)
 
-	// Create gauge with geth system and build information
+	// Create gauge with dipnet system and build information
 	if eth != nil { // The 'eth' backend may be nil in light mode
 		var protos []string
 		for _, p := range eth.Protocols() {
 			protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
 		}
-		metrics.NewRegisteredGaugeInfo("geth/info", nil).Update(metrics.GaugeInfoValue{
+		metrics.NewRegisteredGaugeInfo("dipnet/info", nil).Update(metrics.GaugeInfoValue{
 			"arch":      runtime.GOARCH,
 			"os":        runtime.GOOS,
 			"version":   cfg.Node.Version,
@@ -266,7 +266,7 @@ func makeFullNode(ctx *cli.Context) *node.Node {
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
 		utils.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
 	}
-	// Add the Ethereum Stats daemon if requested.
+	// Add the DipNet Stats daemon if requested.
 	if cfg.Ethstats.URL != "" {
 		utils.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
 	}
@@ -340,7 +340,7 @@ func dumpConfig(ctx *cli.Context) error {
 	return nil
 }
 
-func applyMetricConfig(ctx *cli.Context, cfg *gethConfig) {
+func applyMetricConfig(ctx *cli.Context, cfg *dipnetConfig) {
 	if ctx.IsSet(utils.MetricsEnabledFlag.Name) {
 		cfg.Metrics.Enabled = ctx.Bool(utils.MetricsEnabledFlag.Name)
 	}

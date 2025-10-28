@@ -1,18 +1,18 @@
-// Copyright 2023 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2023 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package utils
 
@@ -55,7 +55,7 @@ func TestTreeKey(t *testing.T) {
 
 // goos: darwin
 // goarch: amd64
-// pkg: github.com/ethereum/go-ethereum/trie/utils
+// pkg: github.com/dipnetvn/dipnet-core/trie/utils
 // cpu: VirtualApple @ 2.50GHz
 // BenchmarkTreeKey
 // BenchmarkTreeKey-8   	  398731	      2961 ns/op	      32 B/op	       1 allocs/op
@@ -73,7 +73,7 @@ func BenchmarkTreeKey(b *testing.B) {
 
 // goos: darwin
 // goarch: amd64
-// pkg: github.com/ethereum/go-ethereum/trie/utils
+// pkg: github.com/dipnetvn/dipnet-core/trie/utils
 // cpu: VirtualApple @ 2.50GHz
 // BenchmarkTreeKeyWithEvaluation
 // BenchmarkTreeKeyWithEvaluation-8   	  513855	      2324 ns/op	      32 B/op	       1 allocs/op
@@ -93,7 +93,7 @@ func BenchmarkTreeKeyWithEvaluation(b *testing.B) {
 
 // goos: darwin
 // goarch: amd64
-// pkg: github.com/ethereum/go-ethereum/trie/utils
+// pkg: github.com/dipnetvn/dipnet-core/trie/utils
 // cpu: VirtualApple @ 2.50GHz
 // BenchmarkStorageKey
 // BenchmarkStorageKey-8   	  230516	      4584 ns/op	      96 B/op	       3 allocs/op
@@ -111,7 +111,7 @@ func BenchmarkStorageKey(b *testing.B) {
 
 // goos: darwin
 // goarch: amd64
-// pkg: github.com/ethereum/go-ethereum/trie/utils
+// pkg: github.com/dipnetvn/dipnet-core/trie/utils
 // cpu: VirtualApple @ 2.50GHz
 // BenchmarkStorageKeyWithEvaluation
 // BenchmarkStorageKeyWithEvaluation-8   	  320125	      3753 ns/op	      96 B/op	       3 allocs/op

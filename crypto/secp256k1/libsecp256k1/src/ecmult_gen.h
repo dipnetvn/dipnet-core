@@ -15,20 +15,20 @@
  *
  * - COMB_BLOCKS is the number of blocks the input is split into. Each
  *   has a corresponding table.
- * - COMB_TEETH is the number of bits simultaneously covered by one table.
+ * - COMB_TEDIP is the number of bits simultaneously covered by one table.
  * - COMB_RANGE is the number of bits in supported scalars. For production
  *   purposes, only 256 is reasonable, but smaller numbers are supported for
  *   exhaustive test mode.
  *
  * The comb's spacing (COMB_SPACING), or the distance between the teeth,
- * is defined as ceil(COMB_RANGE / (COMB_BLOCKS * COMB_TEETH)). Each block covers
- * COMB_SPACING * COMB_TEETH consecutive bits in the input.
+ * is defined as ceil(COMB_RANGE / (COMB_BLOCKS * COMB_TEDIP)). Each block covers
+ * COMB_SPACING * COMB_TEDIP consecutive bits in the input.
  *
- * The size of the precomputed table is COMB_BLOCKS * (1 << (COMB_TEETH - 1))
+ * The size of the precomputed table is COMB_BLOCKS * (1 << (COMB_TEDIP - 1))
  * secp256k1_ge_storages.
  *
  * The number of point additions equals COMB_BLOCKS * COMB_SPACING. Each point
- * addition involves a cmov from (1 << (COMB_TEETH - 1)) table entries and a
+ * addition involves a cmov from (1 << (COMB_TEDIP - 1)) table entries and a
  * conditional negation.
  *
  * The number of point doublings is COMB_SPACING - 1. */
@@ -38,19 +38,19 @@
  * the table cannot have infinities in them (secp256k1_ge_storage
  * doesn't support infinities) */
 #  undef COMB_BLOCKS
-#  undef COMB_TEETH
+#  undef COMB_TEDIP
 #  if EXHAUSTIVE_TEST_ORDER == 7
 #    define COMB_RANGE 3
 #    define COMB_BLOCKS 1
-#    define COMB_TEETH 2
+#    define COMB_TEDIP 2
 #  elif EXHAUSTIVE_TEST_ORDER == 13
 #    define COMB_RANGE 4
 #    define COMB_BLOCKS 1
-#    define COMB_TEETH 2
+#    define COMB_TEDIP 2
 #  elif EXHAUSTIVE_TEST_ORDER == 199
 #    define COMB_RANGE 8
 #    define COMB_BLOCKS 2
-#    define COMB_TEETH 3
+#    define COMB_TEDIP 3
 #  else
 #    error "Unknown exhaustive test order"
 #  endif
@@ -68,49 +68,49 @@
 #    pragma message DEBUG_CONFIG_MSG("COMB_BLOCKS undefined, assuming default value")
 #  endif
 #endif
-#ifndef COMB_TEETH
-#  define COMB_TEETH 6
+#ifndef COMB_TEDIP
+#  define COMB_TEDIP 6
 #  ifdef DEBUG_CONFIG
-#    pragma message DEBUG_CONFIG_MSG("COMB_TEETH undefined, assuming default value")
+#    pragma message DEBUG_CONFIG_MSG("COMB_TEDIP undefined, assuming default value")
 #  endif
 #endif
-/* Use ceil(COMB_RANGE / (COMB_BLOCKS * COMB_TEETH)) as COMB_SPACING. */
-#define COMB_SPACING CEIL_DIV(COMB_RANGE, COMB_BLOCKS * COMB_TEETH)
+/* Use ceil(COMB_RANGE / (COMB_BLOCKS * COMB_TEDIP)) as COMB_SPACING. */
+#define COMB_SPACING CEIL_DIV(COMB_RANGE, COMB_BLOCKS * COMB_TEDIP)
 
 /* Range checks on the parameters. */
 
 /* The remaining COMB_* parameters are derived values, don't modify these. */
 /* - The number of bits covered by all the blocks; must be at least COMB_RANGE. */
-#define COMB_BITS (COMB_BLOCKS * COMB_TEETH * COMB_SPACING)
+#define COMB_BITS (COMB_BLOCKS * COMB_TEDIP * COMB_SPACING)
 /* - The number of entries per table. */
-#define COMB_POINTS (1 << (COMB_TEETH - 1))
+#define COMB_POINTS (1 << (COMB_TEDIP - 1))
 
 /* Sanity checks. */
 #if !(1 <= COMB_BLOCKS && COMB_BLOCKS <= 256)
 #  error "COMB_BLOCKS must be in the range [1, 256]"
 #endif
-#if !(1 <= COMB_TEETH && COMB_TEETH <= 8)
-#  error "COMB_TEETH must be in the range [1, 8]"
+#if !(1 <= COMB_TEDIP && COMB_TEDIP <= 8)
+#  error "COMB_TEDIP must be in the range [1, 8]"
 #endif
 #if COMB_BITS < COMB_RANGE
-#  error "COMB_BLOCKS * COMB_TEETH * COMB_SPACING is too low"
+#  error "COMB_BLOCKS * COMB_TEDIP * COMB_SPACING is too low"
 #endif
 
 /* These last 2 checks are not strictly required, but prevent gratuitously inefficient
  * configurations. Note that they compare with 256 rather than COMB_RANGE, so they do
  * permit somewhat excessive values for the exhaustive test case, where testing with
  * suboptimal parameters may be desirable. */
-#if (COMB_BLOCKS - 1) * COMB_TEETH * COMB_SPACING >= 256
+#if (COMB_BLOCKS - 1) * COMB_TEDIP * COMB_SPACING >= 256
 #  error "COMB_BLOCKS can be reduced"
 #endif
-#if COMB_BLOCKS * (COMB_TEETH - 1) * COMB_SPACING >= 256
-#  error "COMB_TEETH can be reduced"
+#if COMB_BLOCKS * (COMB_TEDIP - 1) * COMB_SPACING >= 256
+#  error "COMB_TEDIP can be reduced"
 #endif
 
 #ifdef DEBUG_CONFIG
 #  pragma message DEBUG_CONFIG_DEF(COMB_RANGE)
 #  pragma message DEBUG_CONFIG_DEF(COMB_BLOCKS)
-#  pragma message DEBUG_CONFIG_DEF(COMB_TEETH)
+#  pragma message DEBUG_CONFIG_DEF(COMB_TEDIP)
 #  pragma message DEBUG_CONFIG_DEF(COMB_SPACING)
 #endif
 

@@ -1,18 +1,18 @@
-// Copyright 2023 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2023 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethapi
 
@@ -34,29 +34,29 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/beacon"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/filtermaps"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/kzg4844"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/internal/blocktest"
-	"github.com/ethereum/go-ethereum/internal/ethapi/override"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core"
+	"github.com/dipnetvn/dipnet-core/accounts"
+	"github.com/dipnetvn/dipnet-core/accounts/abi"
+	"github.com/dipnetvn/dipnet-core/accounts/keystore"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/consensus"
+	"github.com/dipnetvn/dipnet-core/consensus/beacon"
+	"github.com/dipnetvn/dipnet-core/consensus/ethash"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/filtermaps"
+	"github.com/dipnetvn/dipnet-core/core/rawdb"
+	"github.com/dipnetvn/dipnet-core/core/state"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/core/vm"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/crypto/kzg4844"
+	"github.com/dipnetvn/dipnet-core/ethdb"
+	"github.com/dipnetvn/dipnet-core/event"
+	"github.com/dipnetvn/dipnet-core/internal/blocktest"
+	"github.com/dipnetvn/dipnet-core/internal/ethapi/override"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/rpc"
 	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/require"
 )
@@ -484,8 +484,8 @@ func newTestBackend(t *testing.T, n int, gspec *core.Genesis, engine consensus.E
 	return backend
 }
 
-func (b testBackend) SyncProgress(ctx context.Context) ethereum.SyncProgress {
-	return ethereum.SyncProgress{}
+func (b testBackend) SyncProgress(ctx context.Context) dipnet.SyncProgress {
+	return dipnet.SyncProgress{}
 }
 func (b testBackend) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
 	return big.NewInt(0), nil
@@ -2989,7 +2989,7 @@ func newAccounts(n int) (accounts []account) {
 func newTestAccount() account {
 	// testKey is a private key to use for funding a tester account.
 	key, _ := crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	// testAddr is the Ethereum address of the tester account.
+	// testAddr is the DipNet address of the tester account.
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 	return account{key: key, addr: addr}
 }
@@ -3982,7 +3982,7 @@ func makeSignedRaw(t *testing.T, api *TransactionAPI, from, to common.Address, v
 	return signRes.Raw, signRes.Tx
 }
 
-// makeSelfSignedRaw is a convenience for a 0-ETH self-transfer.
+// makeSelfSignedRaw is a convenience for a 0-DIP self-transfer.
 func makeSelfSignedRaw(t *testing.T, api *TransactionAPI, addr common.Address) (hexutil.Bytes, *types.Transaction) {
 	return makeSignedRaw(t, api, addr, addr, big.NewInt(0))
 }

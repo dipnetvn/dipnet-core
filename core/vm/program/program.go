@@ -1,18 +1,18 @@
-// Copyright 2024 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2024 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 // package program is a utility to create EVM bytecode for testing, but _not_ for production. As such:
 //
@@ -26,7 +26,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/dipnetvn/dipnet-core/core/vm"
 	"github.com/holiman/uint256"
 )
 
@@ -129,7 +129,7 @@ func (p *Program) Push(val any) *Program {
 		p.doPush(new(uint256.Int).SetUint64(uint64(v)))
 	case interface{ Bytes() []byte }:
 		// Here, we jump through some hoops in order to avoid depending on
-		// go-ethereum types.Address and common.Hash, and instead use the
+		// dipnet-core types.Address and common.Hash, and instead use the
 		// interface. This works on both values and pointers!
 		p.doPush(new(uint256.Int).SetBytes(v.Bytes()))
 	case nil:

@@ -1,18 +1,18 @@
-// Copyright 2022 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2022 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -24,10 +24,10 @@ import (
 	"os"
 	"slices"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/dipnetvn/dipnet-core/cmd/utils"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/core/rawdb"
+	"github.com/dipnetvn/dipnet-core/log"
 	"github.com/ethereum/go-verkle"
 	"github.com/urfave/cli/v2"
 )
@@ -47,7 +47,7 @@ var (
 				Action:    verifyVerkle,
 				Flags:     slices.Concat(utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
-geth verkle verify <state-root>
+dipnet verkle verify <state-root>
 This command takes a root commitment and attempts to rebuild the tree.
  `,
 			},
@@ -58,7 +58,7 @@ This command takes a root commitment and attempts to rebuild the tree.
 				Action:    expandVerkle,
 				Flags:     slices.Concat(utils.NetworkFlags, utils.DatabaseFlags),
 				Description: `
-geth verkle dump <state-root> <key 1> [<key 2> ...]
+dipnet verkle dump <state-root> <key 1> [<key 2> ...]
 This command will produce a dot file representing the tree, rooted at <root>.
 in which key1, key2, ... are expanded.
  `,

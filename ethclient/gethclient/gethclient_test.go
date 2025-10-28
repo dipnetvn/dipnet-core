@@ -1,20 +1,20 @@
-// Copyright 2021 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2021 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
-package gethclient
+package dipnetclient
 
 import (
 	"bytes"
@@ -24,20 +24,20 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/eth/filters"
-	"github.com/ethereum/go-ethereum/eth/tracers"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/consensus/ethash"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/eth"
+	"github.com/dipnetvn/dipnet-core/eth/ethconfig"
+	"github.com/dipnetvn/dipnet-core/eth/filters"
+	"github.com/dipnetvn/dipnet-core/eth/tracers"
+	"github.com/dipnetvn/dipnet-core/ethclient"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
 var (
@@ -60,11 +60,11 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block, []common.Hash) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
+	// Create DipNet Service
 	config := &ethconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
 	ethservice, err := eth.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new ethereum service: %v", err)
+		t.Fatalf("can't create new dipnet service: %v", err)
 	}
 	n.RegisterAPIs(tracers.APIs(ethservice.APIBackend))
 
@@ -118,7 +118,7 @@ func generateTestChain() (*core.Genesis, []*types.Block, []common.Hash) {
 	return genesis, blocks, txHashes
 }
 
-func TestGethClient(t *testing.T) {
+func TestDipNetClient(t *testing.T) {
 	backend, _, txHashes := newTestBackend(t)
 	client := backend.Attach()
 	defer backend.Close()
@@ -188,14 +188,14 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 	ec := New(client)
 
 	for i, tc := range []struct {
-		msg       ethereum.CallMsg
+		msg       dipnet.CallMsg
 		wantGas   uint64
 		wantErr   string
 		wantVMErr string
 		wantAL    string
 	}{
 		{ // Test transfer
-			msg: ethereum.CallMsg{
+			msg: dipnet.CallMsg{
 				From:     testAddr,
 				To:       &common.Address{},
 				Gas:      21000,
@@ -206,7 +206,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 			wantAL:  `[]`,
 		},
 		{ // Test reverting transaction
-			msg: ethereum.CallMsg{
+			msg: dipnet.CallMsg{
 				From:     testAddr,
 				To:       nil,
 				Gas:      100000,
@@ -226,7 +226,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 ]`,
 		},
 		{ // error when gasPrice is less than baseFee
-			msg: ethereum.CallMsg{
+			msg: dipnet.CallMsg{
 				From:     testAddr,
 				To:       &common.Address{},
 				Gas:      21000,
@@ -236,7 +236,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 			wantErr: "max fee per gas less than block base fee",
 		},
 		{ // when gasPrice is not specified
-			msg: ethereum.CallMsg{
+			msg: dipnet.CallMsg{
 				From:  testAddr,
 				To:    &common.Address{},
 				Gas:   21000,
@@ -458,7 +458,7 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 
 func testCallContract(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	msg := ethereum.CallMsg{
+	msg := dipnet.CallMsg{
 		From:     testAddr,
 		To:       &common.Address{},
 		Gas:      21000,
@@ -587,7 +587,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 
 func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	msg := ethereum.CallMsg{
+	msg := dipnet.CallMsg{
 		From:     testAddr,
 		To:       &common.Address{},
 		Gas:      50000,

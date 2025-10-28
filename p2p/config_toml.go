@@ -5,10 +5,10 @@ package p2p
 import (
 	"crypto/ecdsa"
 
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/p2p/enode"
+	"github.com/dipnetvn/dipnet-core/p2p/nat"
+	"github.com/dipnetvn/dipnet-core/p2p/netutil"
 )
 
 var _ = (*configMarshaling)(nil)

@@ -1,18 +1,18 @@
-// Copyright 2022 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2022 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package engine
 
@@ -21,11 +21,11 @@ import (
 	"math/big"
 	"slices"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/trie"
 )
 
 // PayloadVersion denotes the version of PayloadAttributes used to request the
@@ -34,19 +34,19 @@ type PayloadVersion byte
 
 var (
 	// PayloadV1 is the identifier of ExecutionPayloadV1 introduced in paris fork.
-	// https://github.com/ethereum/execution-apis/blob/main/src/engine/paris.md#executionpayloadv1
+	// https://github.com/dipnet/execution-apis/blob/main/src/engine/paris.md#executionpayloadv1
 	PayloadV1 PayloadVersion = 0x1
 
 	// PayloadV2 is the identifier of ExecutionPayloadV2 introduced in shanghai fork.
 	//
-	// https://github.com/ethereum/execution-apis/blob/main/src/engine/shanghai.md#executionpayloadv2
+	// https://github.com/dipnet/execution-apis/blob/main/src/engine/shanghai.md#executionpayloadv2
 	// ExecutionPayloadV2 has the syntax of ExecutionPayloadV1 and appends a
 	// single field: withdrawals.
 	PayloadV2 PayloadVersion = 0x2
 
 	// PayloadV3 is the identifier of ExecutionPayloadV3 introduced in cancun fork.
 	//
-	// https://github.com/ethereum/execution-apis/blob/main/src/engine/cancun.md#executionpayloadv3
+	// https://github.com/dipnet/execution-apis/blob/main/src/engine/cancun.md#executionpayloadv3
 	// ExecutionPayloadV3 has the syntax of ExecutionPayloadV2 and appends the new
 	// fields: blobGasUsed and excessBlobGas.
 	PayloadV3 PayloadVersion = 0x3
@@ -388,7 +388,7 @@ type ExecutionPayloadBody struct {
 // Client identifiers to support ClientVersionV1.
 const (
 	ClientCode = "GE"
-	ClientName = "go-ethereum"
+	ClientName = "dipnet-core"
 )
 
 // ClientVersionV1 contains information which identifies a client implementation.

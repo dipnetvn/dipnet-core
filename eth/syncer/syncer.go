@@ -1,18 +1,18 @@
-// Copyright 2025 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2025 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package syncer
 
@@ -22,13 +22,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/eth"
+	"github.com/dipnetvn/dipnet-core/eth/ethconfig"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
 type syncReq struct {
@@ -36,7 +36,7 @@ type syncReq struct {
 	errc chan error
 }
 
-// Syncer is an auxiliary service that allows Geth to perform full sync
+// Syncer is an auxiliary service that allows DipNet to perform full sync
 // alone without consensus-layer attached. Users must specify a valid block hash
 // as the sync target.
 //
@@ -44,7 +44,7 @@ type syncReq struct {
 // post-merge, but only for full-sync.
 type Syncer struct {
 	stack          *node.Node
-	backend        *eth.Ethereum
+	backend        *eth.DipNet
 	target         common.Hash
 	request        chan *syncReq
 	closed         chan struct{}
@@ -54,7 +54,7 @@ type Syncer struct {
 
 // Register registers the synchronization override service into the node
 // stack for launching and stopping the service controlled by node.
-func Register(stack *node.Node, backend *eth.Ethereum, target common.Hash, exitWhenSynced bool) (*Syncer, error) {
+func Register(stack *node.Node, backend *eth.DipNet, target common.Hash, exitWhenSynced bool) (*Syncer, error) {
 	s := &Syncer{
 		stack:          stack,
 		backend:        backend,
@@ -68,7 +68,7 @@ func Register(stack *node.Node, backend *eth.Ethereum, target common.Hash, exitW
 	return s, nil
 }
 
-// APIs return the collection of RPC services the ethereum package offers.
+// APIs return the collection of RPC services the dipnet package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
 func (s *Syncer) APIs() []rpc.API {
 	return []rpc.API{
@@ -81,7 +81,7 @@ func (s *Syncer) APIs() []rpc.API {
 
 // run is the main loop that monitors sync requests from users and initiates
 // sync operations when necessary. It also checks whether the specified target
-// has been reached and shuts down Geth if requested by the user.
+// has been reached and shuts down DipNet if requested by the user.
 func (s *Syncer) run() {
 	defer s.wg.Done()
 

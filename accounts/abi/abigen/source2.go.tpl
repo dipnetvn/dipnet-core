@@ -8,10 +8,10 @@ import (
 	"math/big"
 	"errors"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/v2"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/dipnetvn/dipnet-core/accounts/abi"
+	"github.com/dipnetvn/dipnet-core/accounts/abi/bind/v2"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/core/types"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -54,7 +54,7 @@ var (
 		{{end}}
 	}
 
-	// {{.Type}} is an auto generated Go binding around an Ethereum contract.
+	// {{.Type}} is an auto generated Go binding around an DipNet contract.
 	type {{.Type}} struct {
 		abi abi.ABI
 	}

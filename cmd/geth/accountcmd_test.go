@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2016 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -43,8 +43,8 @@ func tmpDatadirWithKeystore(t *testing.T) string {
 
 func TestAccountListEmpty(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "account", "list")
-	geth.ExpectExit()
+	dipnet := runDipNet(t, "account", "list")
+	dipnet.ExpectExit()
 }
 
 func TestAccountList(t *testing.T) {
@@ -63,22 +63,22 @@ Account #2: {289d485d9771714cce91d3393d764e1311907acc} keystore://{{.Datadir}}\k
 `
 	}
 	{
-		geth := runGeth(t, "account", "list", "--datadir", datadir)
-		geth.Expect(want)
-		geth.ExpectExit()
+		dipnet := runDipNet(t, "account", "list", "--datadir", datadir)
+		dipnet.Expect(want)
+		dipnet.ExpectExit()
 	}
 	{
-		geth := runGeth(t, "--datadir", datadir, "account", "list")
-		geth.Expect(want)
-		geth.ExpectExit()
+		dipnet := runDipNet(t, "--datadir", datadir, "account", "list")
+		dipnet.Expect(want)
+		dipnet.ExpectExit()
 	}
 }
 
 func TestAccountNew(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "account", "new", "--lightkdf")
-	defer geth.ExpectExit()
-	geth.Expect(`
+	dipnet := runDipNet(t, "account", "new", "--lightkdf")
+	defer dipnet.ExpectExit()
+	dipnet.Expect(`
 Your new account is locked with a password. Please give a password. Do not forget this password.
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
@@ -86,7 +86,7 @@ Repeat password: {{.InputLine "foobar"}}
 
 Your new key was generated
 `)
-	geth.ExpectRegexp(`
+	dipnet.ExpectRegexp(`
 Public address of the key:   0x[0-9a-fA-F]{40}
 Path of the secret key file: .*UTC--.+--[0-9a-f]{40}
 
@@ -121,15 +121,15 @@ func TestAccountImport(t *testing.T) {
 
 func TestAccountHelp(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "account", "-h")
-	geth.WaitExit()
-	if have, want := geth.ExitStatus(), 0; have != want {
+	dipnet := runDipNet(t, "account", "-h")
+	dipnet.WaitExit()
+	if have, want := dipnet.ExitStatus(), 0; have != want {
 		t.Errorf("exit error, have %d want %d", have, want)
 	}
 
-	geth = runGeth(t, "account", "import", "-h")
-	geth.WaitExit()
-	if have, want := geth.ExitStatus(), 0; have != want {
+	dipnet = runDipNet(t, "account", "import", "-h")
+	dipnet.WaitExit()
+	if have, want := dipnet.ExitStatus(), 0; have != want {
 		t.Errorf("exit error, have %d want %d", have, want)
 	}
 }
@@ -144,16 +144,16 @@ func importAccountWithExpect(t *testing.T, key string, expected string) {
 	if err := os.WriteFile(passwordFile, []byte("foobar"), 0600); err != nil {
 		t.Error(err)
 	}
-	geth := runGeth(t, "--lightkdf", "account", "import", "-password", passwordFile, keyfile)
-	defer geth.ExpectExit()
-	geth.Expect(expected)
+	dipnet := runDipNet(t, "--lightkdf", "account", "import", "-password", passwordFile, keyfile)
+	defer dipnet.ExpectExit()
+	dipnet.Expect(expected)
 }
 
 func TestAccountNewBadRepeat(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "account", "new", "--lightkdf")
-	defer geth.ExpectExit()
-	geth.Expect(`
+	dipnet := runDipNet(t, "account", "new", "--lightkdf")
+	defer dipnet.ExpectExit()
+	dipnet.Expect(`
 Your new account is locked with a password. Please give a password. Do not forget this password.
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "something"}}
@@ -165,11 +165,11 @@ Fatal: Passwords do not match
 func TestAccountUpdate(t *testing.T) {
 	t.Parallel()
 	datadir := tmpDatadirWithKeystore(t)
-	geth := runGeth(t, "account", "update",
+	dipnet := runDipNet(t, "account", "update",
 		"--datadir", datadir, "--lightkdf",
 		"f466859ead1932d743d622cb74fc058882e8648a")
-	defer geth.ExpectExit()
-	geth.Expect(`
+	defer dipnet.ExpectExit()
+	dipnet.Expect(`
 Please give a NEW password. Do not forget this password.
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar2"}}
@@ -181,15 +181,15 @@ Password: {{.InputLine "foobar"}}
 
 func TestWalletImport(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
-	defer geth.ExpectExit()
-	geth.Expect(`
+	dipnet := runDipNet(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
+	defer dipnet.ExpectExit()
+	dipnet.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foo"}}
 Address: {d4584b5f6229b7be90727b0fc8c6b91bb427821f}
 `)
 
-	files, err := os.ReadDir(filepath.Join(geth.Datadir, "keystore"))
+	files, err := os.ReadDir(filepath.Join(dipnet.Datadir, "keystore"))
 	if len(files) != 1 {
 		t.Errorf("expected one key file in keystore directory, found %d files (error: %v)", len(files), err)
 	}
@@ -197,9 +197,9 @@ Address: {d4584b5f6229b7be90727b0fc8c6b91bb427821f}
 
 func TestWalletImportBadPassword(t *testing.T) {
 	t.Parallel()
-	geth := runGeth(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
-	defer geth.ExpectExit()
-	geth.Expect(`
+	dipnet := runDipNet(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
+	defer dipnet.ExpectExit()
+	dipnet.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "wrong"}}
 Fatal: could not decrypt key with given password

@@ -1,18 +1,18 @@
-// Copyright 2015 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2015 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethapi
 
@@ -27,27 +27,27 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/misc/eip1559"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/forkid"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/gasestimator"
-	"github.com/ethereum/go-ethereum/eth/tracers/logger"
-	"github.com/ethereum/go-ethereum/internal/ethapi/override"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/dipnetvn/dipnet-core/accounts"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/common/math"
+	"github.com/dipnetvn/dipnet-core/consensus"
+	"github.com/dipnetvn/dipnet-core/consensus/misc/eip1559"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/forkid"
+	"github.com/dipnetvn/dipnet-core/core/state"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/core/vm"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/eth/gasestimator"
+	"github.com/dipnetvn/dipnet-core/eth/tracers/logger"
+	"github.com/dipnetvn/dipnet-core/internal/ethapi/override"
+	"github.com/dipnetvn/dipnet-core/log"
+	"github.com/dipnetvn/dipnet-core/p2p"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/rlp"
+	"github.com/dipnetvn/dipnet-core/rpc"
+	"github.com/dipnetvn/dipnet-core/trie"
 )
 
 // estimateGasErrorRatio is the amount of overestimation eth_estimateGas is
@@ -57,18 +57,18 @@ const estimateGasErrorRatio = 0.015
 var errBlobTxNotSupported = errors.New("signing blob transactions not supported")
 var errSubClosed = errors.New("chain subscription closed")
 
-// EthereumAPI provides an API to access Ethereum related information.
-type EthereumAPI struct {
+// DipNetAPI provides an API to access DipNet related information.
+type DipNetAPI struct {
 	b Backend
 }
 
-// NewEthereumAPI creates a new Ethereum protocol API.
-func NewEthereumAPI(b Backend) *EthereumAPI {
-	return &EthereumAPI{b}
+// NewDipNetAPI creates a new DipNet protocol API.
+func NewDipNetAPI(b Backend) *DipNetAPI {
+	return &DipNetAPI{b}
 }
 
 // GasPrice returns a suggestion for a gas price for legacy transactions.
-func (api *EthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+func (api *DipNetAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := api.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (api *EthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 }
 
 // MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
-func (api *EthereumAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
+func (api *DipNetAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := api.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ type feeHistoryResult struct {
 }
 
 // FeeHistory returns the fee market history.
-func (api *EthereumAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
+func (api *DipNetAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
 	oldest, reward, baseFee, gasUsed, blobBaseFee, blobGasUsed, err := api.b.FeeHistory(ctx, uint64(blockCount), lastBlock, rewardPercentiles)
 	if err != nil {
 		return nil, err
@@ -135,7 +135,7 @@ func (api *EthereumAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDec
 }
 
 // BlobBaseFee returns the base fee for blob gas at the current head.
-func (api *EthereumAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
+func (api *DipNetAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
 	return (*hexutil.Big)(api.b.BlobBaseFee(ctx))
 }
 
@@ -146,7 +146,7 @@ func (api *EthereumAPI) BlobBaseFee(ctx context.Context) *hexutil.Big {
 // - highestBlock:  block number of the highest block header this node has received from peers
 // - pulledStates:  number of state entries processed until now
 // - knownStates:   number of known state entries that still need to be pulled
-func (api *EthereumAPI) Syncing(ctx context.Context) (interface{}, error) {
+func (api *DipNetAPI) Syncing(ctx context.Context) (interface{}, error) {
 	progress := api.b.SyncProgress(ctx)
 
 	// Return not syncing if the synchronisation already completed
@@ -280,33 +280,33 @@ func (api *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 	return content
 }
 
-// EthereumAccountAPI provides an API to access accounts managed by this node.
+// DipNetAccountAPI provides an API to access accounts managed by this node.
 // It offers only methods that can retrieve accounts.
-type EthereumAccountAPI struct {
+type DipNetAccountAPI struct {
 	am *accounts.Manager
 }
 
-// NewEthereumAccountAPI creates a new EthereumAccountAPI.
-func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
-	return &EthereumAccountAPI{am: am}
+// NewDipNetAccountAPI creates a new DipNetAccountAPI.
+func NewDipNetAccountAPI(am *accounts.Manager) *DipNetAccountAPI {
+	return &DipNetAccountAPI{am: am}
 }
 
 // Accounts returns the collection of accounts this node manages.
-func (api *EthereumAccountAPI) Accounts() []common.Address {
+func (api *DipNetAccountAPI) Accounts() []common.Address {
 	return api.am.Accounts()
 }
 
-// BlockChainAPI provides an API to access Ethereum blockchain data.
+// BlockChainAPI provides an API to access DipNet blockchain data.
 type BlockChainAPI struct {
 	b Backend
 }
 
-// NewBlockChainAPI creates a new Ethereum blockchain API.
+// NewBlockChainAPI creates a new DipNet blockchain API.
 func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{b}
 }
 
-// ChainId is the EIP-155 replay-protection chain id for the current Ethereum chain config.
+// ChainId is the EIP-155 replay-protection chain id for the current DipNet chain config.
 //
 // Note, this method does not conform to EIP-695 because the configured chain ID is always
 // returned, regardless of the current head block. We used to return an error when the chain
@@ -1653,7 +1653,7 @@ func (api *TransactionAPI) SendRawTransaction(ctx context.Context, input hexutil
 	}
 
 	// Convert legacy blob transaction proofs.
-	// TODO: remove in go-ethereum v1.17.x
+	// TODO: remove in dipnet-core v1.17.x
 	if sc := tx.BlobTxSidecar(); sc != nil {
 		exp := api.currentBlobSidecarVersion()
 		if sc.Version == types.BlobSidecarVersion0 && exp == types.BlobSidecarVersion1 {
@@ -1676,7 +1676,7 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 	}
 
 	// Convert legacy blob transaction proofs.
-	// TODO: remove in go-ethereum v1.17.x
+	// TODO: remove in dipnet-core v1.17.x
 	if sc := tx.BlobTxSidecar(); sc != nil {
 		exp := api.currentBlobSidecarVersion()
 		if sc.Version == types.BlobSidecarVersion0 && exp == types.BlobSidecarVersion1 {
@@ -1765,14 +1765,14 @@ func (api *TransactionAPI) SendRawTransactionSync(ctx context.Context, input hex
 }
 
 // Sign calculates an ECDSA signature for:
-// keccak256("\x19Ethereum Signed Message:\n" + len(message) + message).
+// keccak256("\x19DipNet Signed Message:\n" + len(message) + message).
 //
 // Note, the produced signature conforms to the secp256k1 curve R, S and V values,
 // where the V value will be 27 or 28 for legacy reasons.
 //
 // The account associated with addr must be unlocked.
 //
-// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign
+// https://dipnet.org/en/developers/docs/apis/json-rpc/#eth_sign
 func (api *TransactionAPI) Sign(addr common.Address, data hexutil.Bytes) (hexutil.Bytes, error) {
 	// Look up the wallet containing the requested signer
 	account := accounts.Account{Address: addr}
@@ -1923,7 +1923,7 @@ func (api *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs,
 	return common.Hash{}, fmt.Errorf("transaction %#x not found", matchTx.Hash())
 }
 
-// DebugAPI is the collection of Ethereum APIs exposed over the debugging
+// DebugAPI is the collection of DipNet APIs exposed over the debugging
 // namespace.
 type DebugAPI struct {
 	b Backend
@@ -2086,7 +2086,7 @@ func (api *NetAPI) PeerCount() hexutil.Uint {
 	return hexutil.Uint(api.net.PeerCount())
 }
 
-// Version returns the current ethereum protocol version.
+// Version returns the current dipnet protocol version.
 func (api *NetAPI) Version() string {
 	return fmt.Sprintf("%d", api.networkVersion)
 }

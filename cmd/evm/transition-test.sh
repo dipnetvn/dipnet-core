@@ -55,7 +55,7 @@ which can
 
 The idea is to specify the behaviour of this binary very _strict_, so that other
 node implementors can build replicas based on their own state-machines, and the
-state generators can swap between a \`geth\`-based implementation and a \`parityvm\`-based
+state generators can swap between a \`dipnet\`-based implementation and a \`parityvm\`-based
 implementation.
 
 #### Command line params
@@ -504,7 +504,7 @@ type BlockInfo struct {
 The encoding of values for `evm` utility attempts to be relatively flexible. It
 generally supports hex-encoded or decimal-encoded numeric values, and
 hex-encoded byte values (like `common.Address`, `common.Hash`, etc). When in
-doubt, the [`execution-apis`](https://github.com/ethereum/execution-apis) way
+doubt, the [`execution-apis`](https://github.com/dipnet/execution-apis) way
 of encoding should always be accepted.
 
 ## Testing

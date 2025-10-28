@@ -1,18 +1,18 @@
-// Copyright 2023 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2023 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package simulated
 
@@ -20,37 +20,37 @@ import (
 	"errors"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/catalyst"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/eth/filters"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/eth"
+	"github.com/dipnetvn/dipnet-core/eth/catalyst"
+	"github.com/dipnetvn/dipnet-core/eth/ethconfig"
+	"github.com/dipnetvn/dipnet-core/eth/filters"
+	"github.com/dipnetvn/dipnet-core/ethclient"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/p2p"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
-// Client exposes the methods provided by the Ethereum RPC client.
+// Client exposes the methods provided by the DipNet RPC client.
 type Client interface {
-	ethereum.BlockNumberReader
-	ethereum.ChainReader
-	ethereum.ChainStateReader
-	ethereum.ContractCaller
-	ethereum.GasEstimator
-	ethereum.GasPricer
-	ethereum.GasPricer1559
-	ethereum.FeeHistoryReader
-	ethereum.LogFilterer
-	ethereum.PendingStateReader
-	ethereum.PendingContractCaller
-	ethereum.TransactionReader
-	ethereum.TransactionSender
-	ethereum.ChainIDReader
+	dipnet.BlockNumberReader
+	dipnet.ChainReader
+	dipnet.ChainStateReader
+	dipnet.ContractCaller
+	dipnet.GasEstimator
+	dipnet.GasPricer
+	dipnet.GasPricer1559
+	dipnet.FeeHistoryReader
+	dipnet.LogFilterer
+	dipnet.PendingStateReader
+	dipnet.PendingContractCaller
+	dipnet.TransactionReader
+	dipnet.TransactionSender
+	dipnet.ChainIDReader
 }
 
 // simClient wraps ethclient. This exists to prevent extracting ethclient.Client
@@ -60,7 +60,7 @@ type simClient struct {
 }
 
 // Backend is a simulated blockchain. You can use it to test your contracts or
-// other code that interacts with the Ethereum chain.
+// other code that interacts with the DipNet chain.
 type Backend struct {
 	node   *node.Node
 	beacon *catalyst.SimulatedBeacon
@@ -72,7 +72,7 @@ type Backend struct {
 //
 // A simulated backend always uses chainID 1337.
 func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config, ethConf *ethconfig.Config)) *Backend {
-	// Create the default configurations for the outer node shell and the Ethereum
+	// Create the default configurations for the outer node shell and the DipNet
 	// service to mutate with the options afterwards
 	nodeConf := node.DefaultConfig
 	nodeConf.DataDir = ""
@@ -90,7 +90,7 @@ func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config,
 	for _, option := range options {
 		option(&nodeConf, &ethConf)
 	}
-	// Assemble the Ethereum stack to run the chain with
+	// Assemble the DipNet stack to run the chain with
 	stack, err := node.New(&nodeConf)
 	if err != nil {
 		panic(err) // this should never happen

@@ -1,18 +1,18 @@
-// Copyright 2025 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2025 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -20,19 +20,19 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/ethclient/gethclient"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/ethclient"
+	dipnetclient "github.com/dipnetvn/dipnet-core/ethclient/gethclient"
+	"github.com/dipnetvn/dipnet-core/rpc"
 	"github.com/urfave/cli/v2"
 )
 
 type client struct {
-	Eth  *ethclient.Client
-	Geth *gethclient.Client
-	RPC  *rpc.Client
+	Eth    *ethclient.Client
+	DipNet *dipnetclient.Client
+	RPC    *rpc.Client
 }
 
 func makeClient(ctx *cli.Context) *client {
@@ -45,9 +45,9 @@ func makeClient(ctx *cli.Context) *client {
 		exit(fmt.Errorf("could not create RPC client at %s: %v", url, err))
 	}
 	return &client{
-		RPC:  cl,
-		Eth:  ethclient.NewClient(cl),
-		Geth: gethclient.New(cl),
+		RPC:    cl,
+		Eth:    ethclient.NewClient(cl),
+		DipNet: dipnetclient.New(cl),
 	}
 }
 

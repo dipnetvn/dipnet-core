@@ -1,18 +1,18 @@
-// Copyright 2024 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2024 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethapi
 
@@ -20,11 +20,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/dipnetvn/dipnet-core/accounts/abi"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/common/hexutil"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/vm"
 )
 
 // revertError is an API error that encompasses an EVM revert with JSON error
@@ -40,7 +40,7 @@ type txSyncTimeoutError struct {
 }
 
 // ErrorCode returns the JSON error code for a revert.
-// See: https://ethereum.org/en/developers/docs/apis/json-rpc/#error-codes
+// See: https://dipnet.org/en/developers/docs/apis/json-rpc/#error-codes
 func (e *revertError) ErrorCode() int {
 	return 3
 }
@@ -77,7 +77,7 @@ func (e *TxIndexingError) Error() string {
 }
 
 // ErrorCode returns the JSON error code for a revert.
-// See: https://ethereum.org/en/developers/docs/apis/json-rpc/#error-codes
+// See: https://dipnet.org/en/developers/docs/apis/json-rpc/#error-codes
 func (e *TxIndexingError) ErrorCode() int {
 	return -32000 // to be decided
 }

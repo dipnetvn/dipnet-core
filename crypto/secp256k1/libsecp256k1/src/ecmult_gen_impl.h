@@ -76,7 +76,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      *
      * Let comb(s, P) = sum((2*s[i]-1)*2^i*P for i=0..COMB_BITS-1), where s[i] is the i'th bit of
      * the binary representation of scalar s. So the s[i] values determine whether -2^i*P (s[i]=0)
-     * or +2^i*P (s[i]=1) are added together. COMB_BITS is at least 256, so all bits of s are
+     * or +2^i*P (s[i]=1) are added todipneter. COMB_BITS is at least 256, so all bits of s are
      * covered. By manipulating:
      *
      *     comb(s, P) = sum((2*s[i]-1)*2^i*P for i=0..COMB_BITS-1)
@@ -118,9 +118,9 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      * (2*d[i]-1) * 2^(i-1) * G points, for various combinations of i positions.
      * We rewrite our equation in terms of these table entries.
      *
-     * Let mask(b) = sum(2^((b*COMB_TEETH + t)*COMB_SPACING) for t=0..COMB_TEETH-1),
+     * Let mask(b) = sum(2^((b*COMB_TEDIP + t)*COMB_SPACING) for t=0..COMB_TEDIP-1),
      * with b ranging from 0 to COMB_BLOCKS-1. So for example with COMB_BLOCKS=11,
-     * COMB_TEETH=6, COMB_SPACING=4, we would have:
+     * COMB_TEDIP=6, COMB_SPACING=4, we would have:
      *   mask(0)  = 2^0   + 2^4   + 2^8   + 2^12  + 2^16  + 2^20,
      *   mask(1)  = 2^24  + 2^28  + 2^32  + 2^36  + 2^40  + 2^44,
      *   mask(2)  = 2^48  + 2^52  + 2^56  + 2^60  + 2^64  + 2^68,
@@ -137,7 +137,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      *
      * Now define table(b, m) = (m - mask(b)/2) * G, and we will precompute these values for
      * b=0..COMB_BLOCKS-1, and for all values m which (d & mask(b)) can take (so m can take on
-     * 2^COMB_TEETH distinct values).
+     * 2^COMB_TEDIP distinct values).
      *
      * If m=(d & mask(b)), then table(b, m) is the sum of 2^i * (2*d[i]-1) * G/2, with i
      * iterating over the set bits in mask(b). In our example, table(2, 2^48 + 2^56 + 2^68)
@@ -174,7 +174,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      * an incomplete addition formula for most of the multiplication.
      *
      * The last question is how to implement the table(b, m) function. For any value of b,
-     * m=(d & mask(b)) can only take on at most 2^COMB_TEETH possible values (the last one may have
+     * m=(d & mask(b)) can only take on at most 2^COMB_TEDIP possible values (the last one may have
      * fewer as there mask(b) may exceed the curve order). So we could create COMB_BLOCK tables
      * which contain a value for each such m value.
      *
@@ -186,7 +186,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
      * it.
      *
      * secp256k1_ecmult_gen_prec_table[b][index] stores the table(b, m) entries. Index
-     * is the relevant mask(b) bits of m packed together without gaps. */
+     * is the relevant mask(b) bits of m packed todipneter without gaps. */
 
     /* Outer loop: iterate over comb_off from COMB_SPACING - 1 down to 0. */
     comb_off = COMB_SPACING - 1;
@@ -196,17 +196,17 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
         /* Inner loop: for each block, add table entries to the result. */
         for (block = 0; block < COMB_BLOCKS; ++block) {
             /* Gather the mask(block)-selected bits of d into bits. They're packed:
-             * bits[tooth] = d[(block*COMB_TEETH + tooth)*COMB_SPACING + comb_off]. */
+             * bits[tooth] = d[(block*COMB_TEDIP + tooth)*COMB_SPACING + comb_off]. */
             uint32_t bits = 0, sign, abs, index, tooth;
             /* Instead of reading individual bits here to construct the bits variable,
-             * build up the result by xoring rotated reads together. In every iteration,
+             * build up the result by xoring rotated reads todipneter. In every iteration,
              * one additional bit is made correct, starting at the bottom. The bits
              * above that contain junk. This reduces leakage by avoiding computations
              * on variables that can have only a low number of possible values (e.g.,
              * just two values when reading a single bit into a variable.) See:
              * https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-alam.pdf
              */
-            for (tooth = 0; tooth < COMB_TEETH; ++tooth) {
+            for (tooth = 0; tooth < COMB_TEDIP; ++tooth) {
                 /* Construct bitdata s.t. the bottom bit is the bit we'd like to read.
                  *
                  * We could just set bitdata = recoded[bit_pos >> 5] >> (bit_pos & 0x1f)
@@ -229,7 +229,7 @@ static void secp256k1_ecmult_gen(const secp256k1_ecmult_gen_context *ctx, secp25
 
             /* If the top bit of bits is 1, flip them all (corresponding to looking up
              * the negated table value), and remember to negate the result in sign. */
-            sign = (bits >> (COMB_TEETH - 1)) & 1;
+            sign = (bits >> (COMB_TEDIP - 1)) & 1;
             abs = (bits ^ -sign) & (COMB_POINTS - 1);
             VERIFY_CHECK(sign == 0 || sign == 1);
             VERIFY_CHECK(abs < COMB_POINTS);

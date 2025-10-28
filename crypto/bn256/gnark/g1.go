@@ -5,7 +5,7 @@ import (
 	"math/big"
 
 	"github.com/consensys/gnark-crypto/ecc/bn254"
-	"github.com/ethereum/go-ethereum/common/bitutil"
+	"github.com/dipnetvn/dipnet-core/common/bitutil"
 )
 
 // G1 is the affine representation of a G1 group element.
@@ -20,7 +20,7 @@ type G1 struct {
 	inner bn254.G1Affine
 }
 
-// Add adds `a` and `b` together, storing the result in `g`
+// Add adds `a` and `b` todipneter, storing the result in `g`
 func (g *G1) Add(a, b *G1) {
 	g.inner.Add(&a.inner, &b.inner)
 }

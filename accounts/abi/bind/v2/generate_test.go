@@ -1,18 +1,18 @@
-// Copyright 2024 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2024 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package bind_test
 
@@ -23,19 +23,19 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/abigen"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common/compiler"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/dipnetvn/dipnet-core/accounts/abi/abigen"
+	"github.com/dipnetvn/dipnet-core/cmd/utils"
+	"github.com/dipnetvn/dipnet-core/common/compiler"
+	"github.com/dipnetvn/dipnet-core/crypto"
 )
 
 // Run go generate to recreate the test bindings.
 //
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen -v2 -combined-json internal/contracts/db/combined-abi.json -type DBStats -pkg db -out internal/contracts/db/bindings.go
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen -v2 -combined-json internal/contracts/events/combined-abi.json -type C -pkg events -out internal/contracts/events/bindings.go
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen -v2 -combined-json internal/contracts/nested_libraries/combined-abi.json -type C1 -pkg nested_libraries -out internal/contracts/nested_libraries/bindings.go
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen -v2 -combined-json internal/contracts/solc_errors/combined-abi.json -type C -pkg solc_errors -out internal/contracts/solc_errors/bindings.go
-//go:generate go run github.com/ethereum/go-ethereum/cmd/abigen -v2 -combined-json internal/contracts/uint256arrayreturn/combined-abi.json -type C -pkg uint256arrayreturn -out internal/contracts/uint256arrayreturn/bindings.go
+//go:generate go run github.com/dipnetvn/dipnet-core/cmd/abigen -v2 -combined-json internal/contracts/db/combined-abi.json -type DBStats -pkg db -out internal/contracts/db/bindings.go
+//go:generate go run github.com/dipnetvn/dipnet-core/cmd/abigen -v2 -combined-json internal/contracts/events/combined-abi.json -type C -pkg events -out internal/contracts/events/bindings.go
+//go:generate go run github.com/dipnetvn/dipnet-core/cmd/abigen -v2 -combined-json internal/contracts/nested_libraries/combined-abi.json -type C1 -pkg nested_libraries -out internal/contracts/nested_libraries/bindings.go
+//go:generate go run github.com/dipnetvn/dipnet-core/cmd/abigen -v2 -combined-json internal/contracts/solc_errors/combined-abi.json -type C -pkg solc_errors -out internal/contracts/solc_errors/bindings.go
+//go:generate go run github.com/dipnetvn/dipnet-core/cmd/abigen -v2 -combined-json internal/contracts/uint256arrayreturn/combined-abi.json -type C -pkg uint256arrayreturn -out internal/contracts/uint256arrayreturn/bindings.go
 
 // TestBindingGeneration tests that re-running generation of bindings does not result in
 // mutations to the binding code.

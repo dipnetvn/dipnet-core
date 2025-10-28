@@ -1,18 +1,18 @@
-// Copyright 2022 The go-ethereum Authors
-// This file is part of go-ethereum.
+// Copyright 2022 The dipnet-core Authors
+// This file is part of dipnet-core.
 //
-// go-ethereum is free software: you can redistribute it and/or modify
+// dipnet-core is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-ethereum is distributed in the hope that it will be useful,
+// dipnet-core is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+// along with dipnet-core. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -22,16 +22,16 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/dipnetvn/dipnet-core/common"
 )
 
-// TestExport does a basic test of "geth export", exporting the test-genesis.
+// TestExport does a basic test of "dipnet export", exporting the test-genesis.
 func TestExport(t *testing.T) {
 	t.Parallel()
 	outfile := fmt.Sprintf("%v/testExport.out", t.TempDir())
-	geth := runGeth(t, "--datadir", initGeth(t), "export", outfile)
-	geth.WaitExit()
-	if have, want := geth.ExitStatus(), 0; have != want {
+	dipnet := runDipNet(t, "--datadir", initDipNet(t), "export", outfile)
+	dipnet.WaitExit()
+	if have, want := dipnet.ExitStatus(), 0; have != want {
 		t.Errorf("exit error, have %d want %d", have, want)
 	}
 	have, err := os.ReadFile(outfile)

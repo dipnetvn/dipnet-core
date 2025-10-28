@@ -1,18 +1,18 @@
-// Copyright 2016 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2016 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethclient_test
 
@@ -26,35 +26,35 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/beacon"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core"
+	"github.com/dipnetvn/dipnet-core/accounts/abi"
+	"github.com/dipnetvn/dipnet-core/common"
+	"github.com/dipnetvn/dipnet-core/consensus/beacon"
+	"github.com/dipnetvn/dipnet-core/consensus/ethash"
+	"github.com/dipnetvn/dipnet-core/core"
+	"github.com/dipnetvn/dipnet-core/core/types"
+	"github.com/dipnetvn/dipnet-core/crypto"
+	"github.com/dipnetvn/dipnet-core/eth"
+	"github.com/dipnetvn/dipnet-core/eth/ethconfig"
+	"github.com/dipnetvn/dipnet-core/ethclient"
+	"github.com/dipnetvn/dipnet-core/node"
+	"github.com/dipnetvn/dipnet-core/params"
+	"github.com/dipnetvn/dipnet-core/rpc"
 )
 
-// Verify that Client implements the ethereum interfaces.
+// Verify that Client implements the dipnet interfaces.
 var (
-	_ = ethereum.ChainReader(&ethclient.Client{})
-	_ = ethereum.TransactionReader(&ethclient.Client{})
-	_ = ethereum.ChainStateReader(&ethclient.Client{})
-	_ = ethereum.ChainSyncReader(&ethclient.Client{})
-	_ = ethereum.ContractCaller(&ethclient.Client{})
-	_ = ethereum.GasEstimator(&ethclient.Client{})
-	_ = ethereum.GasPricer(&ethclient.Client{})
-	_ = ethereum.LogFilterer(&ethclient.Client{})
-	_ = ethereum.PendingStateReader(&ethclient.Client{})
-	// _ = ethereum.PendingStateEventer(&ethclient.Client{})
-	_ = ethereum.PendingContractCaller(&ethclient.Client{})
+	_ = dipnet.ChainReader(&ethclient.Client{})
+	_ = dipnet.TransactionReader(&ethclient.Client{})
+	_ = dipnet.ChainStateReader(&ethclient.Client{})
+	_ = dipnet.ChainSyncReader(&ethclient.Client{})
+	_ = dipnet.ContractCaller(&ethclient.Client{})
+	_ = dipnet.GasEstimator(&ethclient.Client{})
+	_ = dipnet.GasPricer(&ethclient.Client{})
+	_ = dipnet.LogFilterer(&ethclient.Client{})
+	_ = dipnet.PendingStateReader(&ethclient.Client{})
+	// _ = dipnet.PendingStateEventer(&ethclient.Client{})
+	_ = dipnet.PendingContractCaller(&ethclient.Client{})
 )
 
 var (
@@ -104,11 +104,11 @@ func newTestBackend(config *node.Config) (*node.Node, []*types.Block, error) {
 	if err != nil {
 		return nil, nil, fmt.Errorf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
+	// Create DipNet Service
 	ecfg := &ethconfig.Config{Genesis: genesis, RPCGasCap: 1000000}
 	ethservice, err := eth.New(n, ecfg)
 	if err != nil {
-		return nil, nil, fmt.Errorf("can't create new ethereum service: %v", err)
+		return nil, nil, fmt.Errorf("can't create new dipnet service: %v", err)
 	}
 	// Ensure tx pool starts the background operation
 	txPool := ethservice.TxPool()
@@ -214,7 +214,7 @@ func testHeader(t *testing.T, chain []*types.Block, client *rpc.Client) {
 		"future_block": {
 			block:   big.NewInt(1000000000),
 			want:    nil,
-			wantErr: ethereum.NotFound,
+			wantErr: dipnet.NotFound,
 		},
 	}
 	for name, tt := range tests {
@@ -293,8 +293,8 @@ func testTransactionInBlock(t *testing.T, client *rpc.Client) {
 	}
 
 	// Test tx in block not found.
-	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != ethereum.NotFound {
-		t.Fatal("error should be ethereum.NotFound")
+	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != dipnet.NotFound {
+		t.Fatal("error should be dipnet.NotFound")
 	}
 
 	// Test tx in block found.
@@ -430,7 +430,7 @@ func testStatusFunctions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := &ethereum.FeeHistory{
+	want := &dipnet.FeeHistory{
 		OldestBlock: big.NewInt(2),
 		Reward: [][]*big.Int{
 			{
@@ -453,7 +453,7 @@ func testCallContractAtHash(t *testing.T, client *rpc.Client) {
 	ec := ethclient.NewClient(client)
 
 	// EstimateGas
-	msg := ethereum.CallMsg{
+	msg := dipnet.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -480,7 +480,7 @@ func testCallContract(t *testing.T, client *rpc.Client) {
 	ec := ethclient.NewClient(client)
 
 	// EstimateGas
-	msg := ethereum.CallMsg{
+	msg := dipnet.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -611,7 +611,7 @@ func testAtFunctions(t *testing.T, client *rpc.Client) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	// EstimateGasAtBlock
-	msg := ethereum.CallMsg{
+	msg := dipnet.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -727,7 +727,7 @@ func ExampleRevertErrorData() {
 	// Call the contract.
 	// Note we expect the call to return an error.
 	contract := common.HexToAddress("290f1b36649a61e369c6276f6d29463335b4400c")
-	call := ethereum.CallMsg{To: &contract, Gas: 30000}
+	call := dipnet.CallMsg{To: &contract, Gas: 30000}
 	result, err := ec.CallContract(ctx, call, nil)
 	if len(result) > 0 {
 		panic("got result")
@@ -773,7 +773,7 @@ func TestSimulateV1(t *testing.T) {
 		t.Fatalf("Failed to get header: %v", err)
 	}
 
-	// Simple test: transfer ETH from one account to another
+	// Simple test: transfer DIP from one account to another
 	from := testAddr
 	to := common.HexToAddress("0x0000000000000000000000000000000000000001")
 	value := big.NewInt(100)
@@ -783,7 +783,7 @@ func TestSimulateV1(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				Calls: []ethereum.CallMsg{
+				Calls: []dipnet.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -850,10 +850,10 @@ func TestSimulateV1WithBlockOverrides(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				BlockOverrides: &ethereum.BlockOverrides{
+				BlockOverrides: &dipnet.BlockOverrides{
 					Time: timestamp,
 				},
-				Calls: []ethereum.CallMsg{
+				Calls: []dipnet.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -902,7 +902,7 @@ func TestSimulateV1WithStateOverrides(t *testing.T) {
 
 	from := testAddr
 	to := common.HexToAddress("0x0000000000000000000000000000000000000001")
-	value := big.NewInt(1000000000000000000) // 1 ETH
+	value := big.NewInt(1000000000000000000) // 1 DIP
 	gas := uint64(100000)
 	maxFeePerGas := new(big.Int).Mul(header.BaseFee, big.NewInt(2))
 
@@ -911,7 +911,7 @@ func TestSimulateV1WithStateOverrides(t *testing.T) {
 	balance := new(big.Int)
 	balance.SetString(balanceStr, 10)
 
-	stateOverrides := map[common.Address]ethereum.OverrideAccount{
+	stateOverrides := map[common.Address]dipnet.OverrideAccount{
 		from: {
 			Balance: balance,
 		},
@@ -921,7 +921,7 @@ func TestSimulateV1WithStateOverrides(t *testing.T) {
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
 				StateOverrides: stateOverrides,
-				Calls: []ethereum.CallMsg{
+				Calls: []dipnet.CallMsg{
 					{
 						From:      from,
 						To:        &to,
@@ -976,7 +976,7 @@ func TestSimulateV1WithBlockNumberOrHash(t *testing.T) {
 	opts := ethclient.SimulateOptions{
 		BlockStateCalls: []ethclient.SimulateBlock{
 			{
-				Calls: []ethereum.CallMsg{
+				Calls: []dipnet.CallMsg{
 					{
 						From:      from,
 						To:        &to,

@@ -1,10 +1,10 @@
 package test
 
-import "github.com/ethereum/go-ethereum/common"
-import "github.com/ethereum/go-ethereum/eth"
-import "github.com/ethereum/go-ethereum/rlp"
+import "github.com/dipnetvn/dipnet-core/common"
+import "github.com/dipnetvn/dipnet-core/eth"
+import "github.com/dipnetvn/dipnet-core/rlp"
 import "io"
-import eth1 "github.com/ethereum/go-ethereum/eth/protocols/eth"
+import eth1 "github.com/dipnetvn/dipnet-core/eth/protocols/eth"
 
 func (obj *Test) EncodeRLP(_w io.Writer) error {
 	w := rlp.NewEncoderBuffer(_w)

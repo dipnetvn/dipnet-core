@@ -1,18 +1,18 @@
-// Copyright 2022 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2022 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package types
 
@@ -20,10 +20,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/beacon/merkle"
-	"github.com/ethereum/go-ethereum/beacon/params"
-	"github.com/ethereum/go-ethereum/common"
-	ctypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/dipnetvn/dipnet-core/beacon/merkle"
+	"github.com/dipnetvn/dipnet-core/beacon/params"
+	"github.com/dipnetvn/dipnet-core/common"
+	ctypes "github.com/dipnetvn/dipnet-core/core/types"
 )
 
 // HeadInfo represents an unvalidated new head announcement.
@@ -33,7 +33,7 @@ type HeadInfo struct {
 }
 
 // BootstrapData contains a sync committee where light sync can be started,
-// together with a proof through a beacon header and corresponding state.
+// todipneter with a proof through a beacon header and corresponding state.
 // Note: BootstrapData is fetched from a server based on a known checkpoint hash.
 type BootstrapData struct {
 	Version         string
@@ -58,7 +58,7 @@ func (c *BootstrapData) Validate() error {
 // sync committee root.
 //
 // See data structure definition here:
-// https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientupdate
+// https://github.com/dipnet/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientupdate
 type LightClientUpdate struct {
 	Version                 string
 	AttestedHeader          SignedHeader  // Arbitrary header out of the period signed by the sync committee
@@ -161,7 +161,7 @@ func (h *HeaderWithExecProof) Validate() error {
 // It also proves the belonging execution payload header with a Merkle proof.
 //
 // See data structure definition here:
-// https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientoptimisticupdate
+// https://github.com/dipnet/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientoptimisticupdate
 type OptimisticUpdate struct {
 	Attested HeaderWithExecProof
 	// Sync committee BLS signature aggregate
@@ -194,7 +194,7 @@ func (u *OptimisticUpdate) Validate() error {
 // the finalized beacon header with Merkle proofs.
 //
 // See data structure definition here:
-// https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientfinalityupdate
+// https://github.com/dipnet/consensus-specs/blob/dev/specs/altair/light-client/sync-protocol.md#lightclientfinalityupdate
 type FinalityUpdate struct {
 	Version             string
 	Attested, Finalized HeaderWithExecProof

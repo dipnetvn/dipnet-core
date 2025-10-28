@@ -1,18 +1,18 @@
-// Copyright 2022 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2022 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package node
 
@@ -21,14 +21,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/dipnetvn/dipnet-core/rpc"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 // NewJWTAuth creates an rpc client authentication provider that uses JWT. The
 // secret MUST be 32 bytes (256 bits) as defined by the Engine-API authentication spec.
 //
-// See https://github.com/ethereum/execution-apis/blob/main/src/engine/authentication.md
+// See https://github.com/dipnet/execution-apis/blob/main/src/engine/authentication.md
 // for more details about this authentication scheme.
 func NewJWTAuth(jwtsecret [32]byte) rpc.HTTPAuth {
 	return func(h http.Header) error {

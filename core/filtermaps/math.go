@@ -1,18 +1,18 @@
-// Copyright 2024 The go-ethereum Authors
-// This file is part of the go-ethereum library.
+// Copyright 2024 The dipnet-core Authors
+// This file is part of the dipnet-core library.
 //
-// The go-ethereum library is free software: you can redistribute it and/or modify
+// The dipnet-core library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-ethereum library is distributed in the hope that it will be useful,
+// The dipnet-core library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+// along with the dipnet-core library. If not, see <http://www.gnu.org/licenses/>.
 
 package filtermaps
 
@@ -24,7 +24,7 @@ import (
 	"math"
 	"slices"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/dipnetvn/dipnet-core/common"
 )
 
 // Params defines the basic parameters of the log index structure.
@@ -53,7 +53,7 @@ type Params struct {
 	valuesPerMap  uint64 // The number of log values marked on each filter map
 	baseRowLength uint32 // maximum number of log values per row on layer 0
 
-	// baseRowGroupSize defines the number of base row entries grouped together
+	// baseRowGroupSize defines the number of base row entries grouped todipneter
 	// as a single database entry in the local database to optimize storage
 	// and retrieval efficiency.
 	//
